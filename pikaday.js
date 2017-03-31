@@ -486,9 +486,11 @@
             }
         };
 
-        self._onKeyChange = function(e)
+        /*self._onKeyChange = function(e)
         {
             e = e || window.event;
+
+            console.log('e: ' + e);
 
             if (self.isVisible()) {
 
@@ -513,6 +515,55 @@
                         self.adjustDate('add', 7);
                         break;
                 }
+            }
+        };*/
+
+        self.navigatePicker = function(keycode, selectedDate, e)
+        {
+            let momentDate = moment(selectedDate);
+
+            switch (keycode) {
+                // Left
+                case 37:
+                    var prevDay = momentDate.subtract(1, "days").toDate();
+                    self.setDate(prevDay);
+                return true;
+                // Right
+                case 39:
+                    var nextDay = momentDate.add(1, "days").toDate();
+                    self.setDate(nextDay);
+                return true;
+                // Top
+                case 38:
+                    e.preventDefault();
+                    var prevWeek = momentDate.subtract(1, "weeks").toDate();
+                    self.setDate(prevWeek);
+                return true;
+                // Down
+                case 40:
+                    e.preventDefault();
+                    var nextWeek = momentDate.add(1, "weeks").toDate();
+                    self.setDate(nextWeek);
+                return true;
+                // Page up
+                case 33:
+                    e.preventDefault();
+                    var prevMonth = momentDate.subtract(1, "months").toDate();
+                    self.setDate(prevMonth);
+                return true;
+                // Page down
+                case 34:
+                    e.preventDefault();
+                    var nextMonth = momentDate.add(1, "months").toDate();
+                    self.setDate(nextMonth);
+                return true;
+                // Esc or Enter
+                case 13:
+                case 27:
+                    e.preventDefault();
+                return false;
+                default:
+                return true;
             }
         };
 
@@ -598,7 +649,7 @@
         addEvent(self.el, 'mousedown', self._onMouseDown, true);
         addEvent(self.el, 'touchend', self._onMouseDown, true);
         addEvent(self.el, 'change', self._onChange);
-        addEvent(document, 'keydown', self._onKeyChange);
+        //addEvent(document, 'keydown', self._onKeyChange);
 
         if (opts.field) {
             if (opts.container) {
@@ -1158,7 +1209,7 @@
             }
         },
 
-        hide: function()
+        hide: function(force)
         {
             var v = this._v;
             if (v !== false) {
