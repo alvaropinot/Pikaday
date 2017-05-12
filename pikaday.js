@@ -520,7 +520,7 @@
 
         self.navigatePicker = function(keycode, selectedDate, e)
         {
-            let momentDate = moment(selectedDate);
+            var momentDate = moment(selectedDate);
 
             switch (keycode) {
                 // Left
