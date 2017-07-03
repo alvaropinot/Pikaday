@@ -988,11 +988,13 @@
         setStartRange: function(value)
         {
             this._o.startRange = value;
+            this.draw()
         },
 
         setEndRange: function(value)
         {
             this._o.endRange = value;
+            this.draw()
         },
 
         /**
