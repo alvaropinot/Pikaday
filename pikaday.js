@@ -680,7 +680,7 @@
                 self.gotoDate(defDate);
             }
         } else {
-            self.gotoDate(new Date());
+            self.gotoDate(this._o.today);
         }
 
         if (opts.bound) {
@@ -745,8 +745,10 @@
                 this.setMaxDate(opts.maxDate);
             }
 
+            this.setToday(opts.today ? opts.today : new Date());
+
             if (isArray(opts.yearRange)) {
-                var fallback = new Date().getFullYear() - 10;
+                var fallback = this._o.today.getFullYear() - 10;
                 opts.yearRange[0] = parseInt(opts.yearRange[0], 10) || fallback;
                 opts.yearRange[1] = parseInt(opts.yearRange[1], 10) || fallback;
             } else {
@@ -790,7 +792,7 @@
          */
         getDate: function()
         {
-            return isDate(this._d) ? new Date(this._d.getTime()) : new Date();
+            return isDate(this._d) ? new Date(this._d.getTime()) : this._o.today;
         },
 
         /**
@@ -908,7 +910,7 @@
 
         gotoToday: function()
         {
-            this.gotoDate(new Date());
+            this.gotoDate(this._o.today);
         },
 
         /**
@@ -997,6 +999,12 @@
             this.draw()
         },
 
+        setToday: function(value)
+        {
+            this._o.today = value;
+            this.draw()
+        },
+
         /**
          * refresh the HTML
          */
@@ -1010,6 +1018,7 @@
                 maxYear = opts.maxYear,
                 minMonth = opts.minMonth,
                 maxMonth = opts.maxMonth,
+                today = opts.today,
                 html = '',
                 randId;
 
@@ -1108,7 +1117,7 @@
         render: function(year, month, randId)
         {
             var opts   = this._o,
-                now    = new Date(),
+                now    = this._o.today ? this._o.today : new Date(),
                 days   = getDaysInMonth(year, month),
                 before = new Date(year, month, 1).getDay(),
                 data   = [],
